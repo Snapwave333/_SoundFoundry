@@ -78,7 +78,9 @@ export default function SharePage() {
                 seriesId={track.series_id}
                 seriesTitle={track.series?.title}
               />
-              <AudioPlayer trackId={track.id} />
+              {track.preview_url && (
+                <AudioPlayer src={track.preview_url} trackId={track.id} />
+              )}
               <div className="flex justify-center">
                 <Button
                   variant="outline"

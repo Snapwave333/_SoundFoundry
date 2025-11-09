@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,6 +19,7 @@ import { usePromptStore, type PromptFormState, clearPromptDraft } from "@/lib/st
 import { throttle } from "@/lib/utils/throttle";
 import { slug } from "@/lib/utils/slug";
 import { Badge } from "@/components/ui/badge";
+import { generateCoverSVGCached, downloadPNG } from "@/lib/cover/generateSvg";
 
 interface GenerationPanelProps {
   onTrackCreated?: (jobId: number) => void;
@@ -303,6 +304,8 @@ export function GenerationPanel({ onTrackCreated }: GenerationPanelProps) {
     }
   };
 
+  const [coverSeedCounter, setCoverSeedCounter] = useState(0);
+
   // Cover seed for pre-submit (stable hash) - includes counter for regeneration
   const coverSeed = useMemo(() => {
     const base = JSON.stringify({
@@ -332,9 +335,9 @@ export function GenerationPanel({ onTrackCreated }: GenerationPanelProps) {
   const coverSvg = useMemo(() => {
     const title = (prompt.trim() || "Untitled").slice(0, 48);
     const mood = enhancedPreview?.mood ?? "Neutral";
-    const genreValue = genre || enhancedPreview?.genre ?? "Electronic";
-    const keyValue = key || enhancedPreview?.key ?? "Am";
-    const bpmValue = tempo || enhancedPreview?.bpm ?? 110;
+    const genreValue = genre || (enhancedPreview?.genre ?? "Electronic");
+    const keyValue = key || (enhancedPreview?.key ?? "Am");
+    const bpmValue = tempo || (enhancedPreview?.bpm ?? 110);
 
     return generateCoverSVGCached({
       title,
@@ -348,8 +351,6 @@ export function GenerationPanel({ onTrackCreated }: GenerationPanelProps) {
       cacheKey: `${coverSeed}-${isDarkMode ? "dark" : "light"}-${title}-${genreValue}-${mood}-${keyValue}-${bpmValue}`,
     });
   }, [prompt, coverSeed, genre, enhancedPreview, tempo, key, isDarkMode]);
-
-  const [coverSeedCounter, setCoverSeedCounter] = useState(0);
 
   const handleDownloadSvg = () => {
     const blob = new Blob([coverSvg], { type: "image/svg+xml;charset=utf-8" });
@@ -365,16 +366,9 @@ export function GenerationPanel({ onTrackCreated }: GenerationPanelProps) {
 
   const handleDownloadPng = async () => {
     const startTime = performance.now();
-    const blob = await svgToPng(coverSvg, 1024);
-    const duration = performance.now() - startTime;
-    
-    const a = document.createElement("a");
-    // "cover-" (6) + ".png" (4) = 10 chars, so max 90 for base to stay ≤100 total
     const base = slug(`${prompt || "untitled"}-${coverSeed.slice(0, 8)}`, 90);
-    a.href = URL.createObjectURL(blob);
-    a.download = `cover-${base}.png`;
-    a.click();
-    URL.revokeObjectURL(a.href);
+    await downloadPNG(coverSvg, `cover-${base}.png`, 1024);
+    const duration = performance.now() - startTime;
     
     if (duration > 150) {
       console.warn(`PNG export took ${duration.toFixed(0)}ms (target: <150ms)`);
