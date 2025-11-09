@@ -10,6 +10,7 @@
 
 [![Deploy Status](https://img.shields.io/badge/Deploy-Live-brightgreen)](https://promptbloom.app)
 [![Open App](https://img.shields.io/badge/Open%20App-promptbloom.app-blue)](https://promptbloom.app/app)
+[![Production Status](https://img.shields.io/badge/Production-Verified-success)](https://promptbloom.app)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub last commit](https://img.shields.io/github/last-commit/Snapwave333/_SoundFoundry)](https://github.com/Snapwave333/_SoundFoundry)
@@ -266,6 +267,42 @@ SoundFoundry implements a **fair market pricing baseline** with:
 - **Next.js** - React framework
 - **FastAPI** - Python web framework
 - **Celery** - Distributed task queue
+
+## 🚀 Deployment & Status
+
+### Live Production
+
+- **Site**: [promptbloom.app](https://promptbloom.app)
+- **Dashboard**: [promptbloom.app/app](https://promptbloom.app/app)
+- **Status**: ✅ Deployed on Vercel
+
+### Quick Verification
+
+After deployment, run the verification script:
+
+```bash
+# Bash/Linux/macOS
+./scripts/verify-production.sh
+
+# PowerShell (Windows)
+.\scripts\verify-production.ps1
+
+# Node.js (any platform)
+node scripts/verify-production.js
+```
+
+### Deployment Checklist
+
+- [x] DNS configured (CNAME: `@` → `cname.vercel-dns.com`)
+- [x] Vercel project created and connected
+- [x] Environment variables set in Vercel
+- [x] Security headers verified
+- [x] SSL certificate provisioned
+- [x] Sitemap and robots.txt accessible
+- [x] Authentication flow tested
+- [x] API CORS configured
+
+See [docs/DNS_SETUP.md](./docs/DNS_SETUP.md) for detailed DNS configuration.
 
 ## 📊 Project Status
 

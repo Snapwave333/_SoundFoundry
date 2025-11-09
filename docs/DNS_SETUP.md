@@ -1,5 +1,13 @@
 # DNS Setup for PromptBloom
 
+## Quick Start
+
+1. **Add domain in Vercel**: Project Settings → Domains → Add `promptbloom.app`
+2. **Copy the CNAME value** Vercel provides (usually `cname.vercel-dns.com`)
+3. **Add CNAME record** in your DNS provider (see below)
+4. **Wait 24-48 hours** for DNS propagation
+5. **Verify**: Vercel will automatically provision SSL certificate
+
 ## Required DNS Records
 
 ### Primary Domain: promptbloom.app

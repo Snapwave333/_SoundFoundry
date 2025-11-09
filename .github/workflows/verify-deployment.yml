@@ -1,0 +1,41 @@
+name: Verify Deployment
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Run every 6 hours
+    - cron: '0 */6 * * *'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run production verification
+        run: |
+          chmod +x scripts/verify-production.sh
+          ./scripts/verify-production.sh
+        env:
+          SITE_URL: https://promptbloom.app
+          API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'https://api.promptbloom.app' }}
+        continue-on-error: true
+
+      - name: Comment on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '⚠️ Production verification failed. Check the workflow logs.'
+            })
+
