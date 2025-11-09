@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/globals.css";
 import { Providers } from "@/lib/providers";
+import { AnalyticsScript } from "@/components/Analytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,41 +14,77 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://promptbloom.app";
+const siteName = "PromptBloom";
+const siteDescription = "Generate professional-quality music tracks from text prompts. Add lyrics, guide with references, and export when ready.";
+
 export const metadata: Metadata = {
-  title: "SoundFoundry — Craft Your Sound",
-  description: "Generate full tracks from a prompt. Add lyrics, guide with a reference, and export when ready.",
-  keywords: ["AI music", "music generation", "text to music", "AI audio"],
-  authors: [{ name: "SoundFoundry" }],
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: `${siteName} — Craft Your Sound`,
+    template: `%s — ${siteName}`,
+  },
+  description: siteDescription,
+  keywords: ["AI music", "music generation", "text to music", "AI audio", "music AI"],
+  authors: [{ name: siteName }],
+  creator: siteName,
+  publisher: siteName,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   openGraph: {
-    title: "SoundFoundry — Craft Your Sound",
-    description: "Generate full tracks from a prompt. Add lyrics, guide with a reference, and export when ready.",
     type: "website",
+    locale: "en_US",
+    url: siteUrl,
+    siteName,
+    title: `${siteName} — Craft Your Sound`,
+    description: siteDescription,
     images: [
       {
-        url: "/og/social_preview.png",
+        url: "/branding/social-card_1200x630.png",
         width: 1200,
         height: 630,
-        alt: "SoundFoundry",
+        alt: siteName,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "SoundFoundry — Craft Your Sound",
-    description: "Generate full tracks from a prompt. Add lyrics, guide with a reference, and export when ready.",
-    images: ["/og/social_preview.png"],
+    title: `${siteName} — Craft Your Sound`,
+    description: siteDescription,
+    images: ["/branding/social-card_1200x630.png"],
+    creator: "@promptbloom",
   },
-  themeColor: "hsl(220 14% 9%)",
-  manifest: "/site.webmanifest",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   icons: {
     icon: [
-      { url: "/favicon.ico" },
-      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+      { url: "/branding/favicon.ico" },
+      { url: "/branding/icon_256.png", sizes: "256x256", type: "image/png" },
+      { url: "/branding/icon_512.png", sizes: "512x512", type: "image/png" },
     ],
     apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      { url: "/branding/icon_512.png", sizes: "512x512", type: "image/png" },
     ],
+  },
+  manifest: "/site.webmanifest",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#F3F5F7" },
+    { media: "(prefers-color-scheme: dark)", color: "#0D0D0F" },
+  ],
+  alternates: {
+    canonical: siteUrl,
   },
 };
 
@@ -60,10 +97,10 @@ export default function RootLayout({
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         <meta name="color-scheme" content="dark light" />
-        <meta name="theme-color" content="hsl(220 14% 9%)" />
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" href="/branding/favicon.ico" />
+        <link rel="apple-touch-icon" href="/branding/icon_512.png" />
         <link rel="manifest" href="/site.webmanifest" />
+        <AnalyticsScript />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

@@ -1,12 +1,15 @@
 <div align="center">
 
-![SoundFoundry Banner](assets/branding/social-card_1200x630.png)
+![PromptBloom Banner](assets/branding/social-card_1200x630.png)
 
-# SoundFoundry
+# PromptBloom
 
 ### Craft Your Sound
 
 **AI Music Generator** — Generate full tracks from text prompts. Add lyrics, guide with a reference, and export when ready.
+
+[![Deploy Status](https://img.shields.io/badge/Deploy-Live-brightgreen)](https://promptbloom.app)
+[![Open App](https://img.shields.io/badge/Open%20App-promptbloom.app-blue)](https://promptbloom.app/app)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub last commit](https://img.shields.io/github/last-commit/Snapwave333/_SoundFoundry)](https://github.com/Snapwave333/_SoundFoundry)
@@ -14,7 +17,7 @@
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/Snapwave333/_SoundFoundry)](https://github.com/Snapwave333/_SoundFoundry/pulls)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-[Installation](#-quick-install) • [Usage](#-features) • [Demo](#-demo) • [Architecture](#-architecture) • [Roadmap](./docs/ROADMAP.md) • [Contributing](./docs/CONTRIBUTING.md) • [License](#-license)
+[Live Site](https://promptbloom.app) • [Open App](https://promptbloom.app/app) • [Installation](#-quick-install) • [Usage](#-features) • [Demo](#-demo) • [Architecture](#-architecture) • [Roadmap](./docs/ROADMAP.md) • [Contributing](./docs/CONTRIBUTING.md) • [License](#-license)
 
 </div>
 
