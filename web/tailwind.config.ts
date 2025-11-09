@@ -24,6 +24,12 @@ const config: Config = {
         positive: "hsl(var(--color-positive))",
         warning: "hsl(var(--color-warning))",
         danger: "hsl(var(--color-danger))",
+        // Brand tokens
+        forgeBlack: "#0D0D0F",
+        graphite: "#24262A",
+        steel: "#F3F5F7",
+        amber: "#FFB24D",
+        resonance: "#3A77FF",
       },
       borderRadius: {
         sm: "var(--radius-sm)",

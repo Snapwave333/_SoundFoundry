@@ -1,13 +1,22 @@
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import Link from "next/link";
 import Image from "next/image";
 import { CreditsDisplay } from "@/components/CreditsDisplay";
 import { FreeModeBanner } from "@/components/FreeModeBanner";
 
-export default function AppLayout({
+export default async function AppLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Server-side auth guard
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user) {
+    redirect("/auth/signin?callbackUrl=/app");
+  }
   return (
     <div className="min-h-screen flex flex-col bg-bg">
       <header className="border-b border-border bg-bg-elevated/50 backdrop-blur-sm sticky top-0 z-50">
