@@ -203,6 +203,19 @@ This checks:
 - **Cause**: API not allowing `promptbloom.app` origin
 - **Fix**: Update API CORS config to include `https://promptbloom.app` and `https://app.promptbloom.app`
 
+## CSP Reporting (Optional)
+
+CSP violation reporting is documented but not enabled by default. To enable:
+
+1. Create a `/csp-report` endpoint in your Next.js API routes (`web/app/api/csp-report/route.ts`)
+2. Update CSP header in `vercel.json` to include `report-to` directive:
+   ```json
+   "Content-Security-Policy": "...; report-to /csp-report"
+   ```
+3. Monitor CSP violations in your logging/monitoring system
+
+**Note**: This is optional and not required for go-live. Can be added later for enhanced security monitoring.
+
 ## Post-Deploy Verification
 
 After DNS propagates and Vercel deploys:
