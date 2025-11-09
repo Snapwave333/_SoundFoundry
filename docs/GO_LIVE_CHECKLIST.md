@@ -110,6 +110,55 @@ Target: ≥90 on Performance, Accessibility, Best Practices, SEO
 
 ## Automated Verification
 
+### Quick Verification Scripts
+
+Run the verification script:
+
+```bash
+# Bash/Linux/macOS
+./scripts/verify-production.sh
+
+# PowerShell (Windows)
+.\scripts\verify-production.ps1
+
+# Node.js (any platform)
+node scripts/verify-production.js
+```
+
+### Individual Checks
+
+Run specific verification checks:
+
+```bash
+# Security Headers
+cd web && npm run test:headers
+
+# DNS & SSL
+cd web && npm run test:dns
+
+# Authentication Smoke Test
+cd web && npm run test:login:smoke
+
+# Accessibility (Pa11y)
+cd web && npm run test:access
+
+# Broken Links
+cd web && npm run test:links
+
+# Lighthouse CI
+cd web && npm run test:lhci
+```
+
+### Expected Thresholds
+
+- **Lighthouse**: ≥90 on Performance, Accessibility, Best Practices, SEO
+- **Pa11y**: 0 serious/critical issues
+- **Security Headers**: All required headers present with correct values
+- **DNS**: Resolves to Vercel CNAME
+- **SSL**: Certificate valid with ≥21 days until expiry
+
+## Automated Verification
+
 Run the verification script:
 
 ```bash

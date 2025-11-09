@@ -1,0 +1,9 @@
+10021	PASS	Information Disclosure - Sensitive Information in URL
+10054	PASS	Content Security Policy (CSP) Header Not Set (if CSP is set but report-uri missing)
+10096	PASS	Timestamp Disclosure - Unix
+10098	PASS	User Controllable HTML Element Attribute (Potential XSS)
+10109	PASS	Absence of Anti-CSRF Tokens (if using SameSite cookies)
+10202	PASS	Sub Resource Integrity Attribute Missing
+50003	PASS	Retrieved from Cache
+50004	PASS	Content-Type Header Missing
+

@@ -11,6 +11,8 @@
 [![Deploy Status](https://img.shields.io/badge/Deploy-Live-brightgreen)](https://promptbloom.app)
 [![Open App](https://img.shields.io/badge/Open%20App-promptbloom.app-blue)](https://promptbloom.app/app)
 [![Production Status](https://img.shields.io/badge/Production-Verified-success)](https://promptbloom.app)
+[![Verification](https://github.com/Snapwave333/_SoundFoundry/actions/workflows/verify-deployment.yml/badge.svg)](https://github.com/Snapwave333/_SoundFoundry/actions/workflows/verify-deployment.yml)
+[![Lighthouse](https://img.shields.io/badge/Lighthouse-Performance%3A%2090%2B-brightgreen)](https://promptbloom.app)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub last commit](https://img.shields.io/github/last-commit/Snapwave333/_SoundFoundry)](https://github.com/Snapwave333/_SoundFoundry)
