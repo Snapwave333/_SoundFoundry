@@ -32,6 +32,8 @@
 - 🎵 **Text-to-Music Generation** - Create full tracks from natural language prompts
 - 🎤 **Optional Vocals** - Add lyrics for AI-generated vocal tracks
 - 🎧 **Reference Audio** - Upload reference tracks to guide style and mood (with automatic BPM/key analysis)
+- 💳 **Stripe Billing** - Purchase token packs via Stripe Checkout, manage subscriptions via Customer Portal
+- 📊 **Token Ledger** - Secure transaction history with idempotency guarantees
 - 🎨 **Multi-Genre Presets** - Cinematic, Electronic, Pop, Ambient, Hip-Hop, Rock, World
 - ⚙️ **Adjustable Parameters** - Duration (15-240s), style strength, tempo, key, seed
 - 🎨 **Style System** - Visual series with unique palettes and geometry per user

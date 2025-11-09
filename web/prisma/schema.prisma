@@ -1,0 +1,43 @@
+// Prisma schema for billing and token ledger
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model BillingCustomer {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  stripeId  String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([stripeId])
+}
+
+model TokenLedger {
+  id            String   @id @default(cuid())
+  userId        String
+  delta         Int      // +credits, -debits
+  reason        String
+  source        String   // 'stripe_checkout', 'stripe_invoice', 'manual', 'consume', 'stripe_refund'
+  stripeEventId String?  @unique
+  meta          Json?
+  createdAt     DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([stripeEventId])
+}
+
+model TokenBalance {
+  userId    String   @id
+  balance   Int      @default(0)
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+

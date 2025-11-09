@@ -1,5 +1,5 @@
 import { withAuth } from "next-auth/middleware";
-import { NextResponse } from "next/server";
+import { NextResponse } from "next/navigation";
 
 export default withAuth(
   function middleware(req) {
@@ -16,6 +16,7 @@ export default withAuth(
       "/terms",
       "/auth",
       "/api/auth",
+      "/api/webhooks", // Webhooks don't require auth
       "/share",
     ];
     
@@ -55,6 +56,7 @@ export default withAuth(
           "/terms",
           "/auth",
           "/api/auth",
+          "/api/webhooks",
           "/share",
         ];
         
@@ -84,13 +86,11 @@ export default withAuth(
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder
-     */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/app/:path*",
+    "/api/tracks/:path*",
+    "/api/credits/:path*",
+    "/api/billing/:path*",
+    "/api/tokens/:path*",
+    "/api/admin/:path*",
   ],
 };
