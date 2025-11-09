@@ -306,6 +306,20 @@ node scripts/verify-production.js
 
 See [docs/DNS_SETUP.md](./docs/DNS_SETUP.md) for detailed DNS configuration.
 
+### Verification Matrix
+
+| Check | Script | Threshold | Status |
+|-------|--------|-----------|--------|
+| Security Headers | `test:headers` | All headers present | ✅ |
+| DNS & SSL | `test:dns` | Valid DNS, SSL ≥21 days | ✅ |
+| Authentication | `test:login:smoke` | Redirect works, login flow | ✅ |
+| Accessibility | `test:access` | 0 serious/critical issues | ✅ |
+| Broken Links | `test:links` | No broken links | ✅ |
+| Lighthouse | `test:lhci` | ≥90 on all categories | ✅ |
+| OWASP ZAP | `zap_baseline` | No high/critical issues | ✅ |
+
+See [docs/GO_LIVE_CHECKLIST.md](./docs/GO_LIVE_CHECKLIST.md) for detailed verification steps.
+
 ## 📊 Project Status
 
 <div align="center">
