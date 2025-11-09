@@ -13,12 +13,16 @@ model User {
   id           String   @id @default(uuid())
   email        String   @unique
   passwordHash String?  @map("password_hash")
+  displayName  String?  @map("display_name")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
   
   roles        UserRole[]
   sessions     Session[]
   accounts     Account[]
+  auditLogs    AuditLog[]
+  invitesCreated Invite[] @relation("InviteCreator")
+  mfaSecret    MfaSecret?
   
   @@index([email])
   @@map("users")
@@ -50,17 +54,51 @@ model UserRole {
 }
 
 model Invite {
-  token     String   @id @default(uuid())
-  roleId    Int      @map("role_id")
-  expiresAt DateTime @default(now()) @map("expires_at")
-  used      Boolean  @default(false)
-  createdAt DateTime @default(now()) @map("created_at")
+  token      String   @id @default(uuid())
+  roleId     Int      @map("role_id")
+  createdBy  String?  @map("created_by")
+  expiresAt  DateTime @default(now()) @map("expires_at")
+  used       Boolean  @default(false)
+  createdAt  DateTime @default(now()) @map("created_at")
   
-  role      Role     @relation(fields: [roleId], references: [id])
+  role       Role     @relation(fields: [roleId], references: [id])
+  creator    User?    @relation("InviteCreator", fields: [createdBy], references: [id])
   
   @@index([roleId])
   @@index([token])
+  @@index([createdBy])
   @@map("invites")
+}
+
+model AuditLog {
+  id        BigInt   @id @default(autoincrement())
+  userId    String?  @map("user_id")
+  action    String
+  metadata  Json?
+  ip        String?
+  userAgent String?  @map("user_agent")
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model MfaSecret {
+  id        String   @id @default(cuid())
+  userId    String   @unique @map("user_id")
+  secretHash String  @map("secret_hash")
+  enabled   Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@map("mfa_secrets")
 }
 
 // NextAuth models

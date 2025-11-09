@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * Seed default roles (user, developer, admin)
+ * Seed default roles (user, creator, developer, admin)
  * Run this after Prisma migrations
  * 
  * Usage: npx tsx scripts/seed-roles.ts
@@ -11,7 +11,7 @@ import { PrismaClient } from "@prisma/client";
 const db = new PrismaClient();
 
 async function main() {
-  const roles = ["user", "developer", "admin"];
+  const roles = ["user", "creator", "developer", "admin"];
 
   for (const roleName of roles) {
     const existing = await db.role.findUnique({
@@ -29,6 +29,11 @@ async function main() {
   }
 
   console.log("\n✅ Role seeding complete!");
+  console.log("\nRoles:");
+  console.log("  - user: Normal dashboard use (default)");
+  console.log("  - creator: Create AI models / pipelines (invite-only)");
+  console.log("  - developer: Internal ops, debugging tools (invite-only)");
+  console.log("  - admin: Manage roles, billing, bans, logs (invite-only)");
 }
 
 main()
@@ -39,4 +44,3 @@ main()
   .finally(async () => {
     await db.$disconnect();
   });
-

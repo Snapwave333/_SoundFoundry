@@ -60,6 +60,22 @@ export default async function AppLayout({
             >
               Settings
             </Link>
+            {(session.user as any)?.roles?.includes("developer") || (session.user as any)?.roles?.includes("admin") ? (
+              <Link
+                href="/app/dev"
+                className="text-fg-muted hover:text-fg transition-normal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              >
+                Dev Tools
+              </Link>
+            ) : null}
+            {(session.user as any)?.roles?.includes("admin") ? (
+              <Link
+                href="/app/admin"
+                className="text-fg-muted hover:text-fg transition-normal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              >
+                Admin
+              </Link>
+            ) : null}
           </nav>
 
           <CreditsDisplay />

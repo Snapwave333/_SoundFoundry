@@ -2,16 +2,31 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import argon2 from "argon2";
 import { z } from "zod";
+import { rateLimit, getRateLimitId } from "@/lib/rate-limit";
+import { auditLog, getRequestMetadata, AuditActions } from "@/lib/audit";
 
 const signupSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
+  displayName: z.string().optional(),
 });
 
 export async function POST(req: NextRequest) {
+  // Rate limiting
+  const rateLimitId = getRateLimitId(req, "signup");
+  const limit = rateLimit(rateLimitId, 3, 60 * 1000); // 3 signups per minute
+
+  if (!limit.allowed) {
+    return NextResponse.json(
+      { error: "Rate limit exceeded", retryAfter: limit.retryAfter },
+      { status: 429 }
+    );
+  }
+
   try {
     const body = await req.json();
-    const { email, password } = signupSchema.parse(body);
+    const { email, password, displayName } = signupSchema.parse(body);
+    const { ip, userAgent } = await getRequestMetadata();
 
     // Check if user already exists
     const existing = await db.user.findUnique({
@@ -35,6 +50,7 @@ export async function POST(req: NextRequest) {
       data: {
         email,
         passwordHash,
+        displayName: displayName || email.split("@")[0],
       },
     });
 
@@ -51,6 +67,15 @@ export async function POST(req: NextRequest) {
         },
       });
     }
+
+    // Audit log
+    await auditLog({
+      userId: user.id,
+      action: AuditActions.SIGNUP,
+      metadata: { email, displayName },
+      ip,
+      userAgent,
+    });
 
     return NextResponse.json({
       success: true,

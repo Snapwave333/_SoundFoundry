@@ -17,9 +17,10 @@ const db = new PrismaClient();
 async function main() {
   const roleName = process.argv[2];
   const expiresInDays = parseInt(process.argv[3] || "7", 10);
+  const createdBy = process.argv[4]; // Optional: admin user ID
 
-  if (!roleName || !["developer", "admin"].includes(roleName)) {
-    console.error("Usage: npx tsx scripts/create-invite.ts <developer|admin> [expiresInDays]");
+  if (!roleName || !["creator", "developer", "admin"].includes(roleName)) {
+    console.error("Usage: npx tsx scripts/create-invite.ts <creator|developer|admin> [expiresInDays] [createdByUserId]");
     process.exit(1);
   }
 
@@ -46,6 +47,7 @@ async function main() {
         data: {
           token,
           roleId: newRole.id,
+          createdBy: createdBy || null,
           expiresAt,
         },
       });
@@ -69,6 +71,7 @@ async function main() {
         data: {
           token,
           roleId: role.id,
+          createdBy: createdBy || null,
           expiresAt,
         },
       });
