@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "type-check": "tsc --noEmit",
     "lint:tokens": "grep -R --line-number -E '#[0-9a-fA-F]{3,8}|hsl\\([^v]|rgb\\([^v]' web/components && echo 'Found hardcoded colors' && exit 1 || true",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui"

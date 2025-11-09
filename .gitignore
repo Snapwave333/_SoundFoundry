@@ -74,3 +74,27 @@ logs/
 tmp/
 temp/
 
+# Build/coverage caches
+coverage/
+.nyc_output/
+.pytest_cache/
+__pycache__/
+
+# Platform-specific
+.DS_Store
+Thumbs.db
+*.log
+
+# Vercel
+.vercel
+
+# Turbo
+.turbo
+
+# Vite
+.vite
+
+# Cache directories
+.cache/
+*.cache
+

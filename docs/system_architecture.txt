@@ -1,0 +1,74 @@
+SoundFoundry System Architecture Diagram
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│                           USER BROWSER                                   │
+│                         (Next.js Frontend)                               │
+│                    Port 3000 | React 19 + TypeScript                    │
+└───────────────────────────────┬─────────────────────────────────────────┘
+                                │
+                                │ HTTP/REST API
+                                │
+                ┌───────────────▼───────────────────────────────┐
+                │          FastAPI Backend                      │
+                │          Port 8000                            │
+                │  ┌─────────────────────────────────────────┐ │
+                │  │ API Endpoints:                           │ │
+                │  │ • /api/tracks                            │ │
+                │  │ • /api/jobs                              │ │
+                │  │ • /api/credits                            │ │
+                │  │ • /api/style                              │ │
+                │  │ • /api/analyze                            │ │
+                │  │ • /api/stripe/webhook                     │ │
+                │  └─────────────────────────────────────────┘ │
+                └───────────────┬───────────────────────────────┘
+                                │
+        ┌───────────────────────┼───────────────────────┐
+        │                       │                         │
+        │                       │                         │
+┌───────▼────────┐    ┌─────────▼──────────┐   ┌────────▼──────────┐
+│  PostgreSQL    │    │      Redis          │   │   Celery Worker    │
+│  Port 5432     │    │   Port 6379         │   │   (Async Jobs)    │
+│                │    │                     │   │                    │
+│ • Users        │    │ • Job Queue         │   │ • generate_music   │
+│ • Tracks       │    │ • Cache             │   │ • Process audio    │
+│ • Jobs         │    │ • Session Store     │   │ • Update status    │
+│ • Credits      │    │                     │   │                    │
+│ • Series       │    │                     │   │                    │
+│ • Files        │    │                     │   │                    │
+└────────────────┘    └─────────────────────┘   └────────┬───────────┘
+                                                          │
+                                    ┌─────────────────────┼─────────────────────┐
+                                    │                     │                     │
+                          ┌─────────▼──────────┐  ┌──────▼────────┐  ┌─────────▼──────────┐
+                          │   FAL.ai API       │  │  Replicate    │  │   MinIO/S3         │
+                          │  (Primary)         │  │  (Fallback)   │  │   Port 9000       │
+                          │                    │  │               │  │                   │
+                          │ • Music Gen        │  │ • Music Gen    │  │ • Audio Files     │
+                          │ • MiniMax Music v2 │  │ • Fallback     │  │ • Cover Art       │
+                          │                    │  │               │  │ • Stems ZIP       │
+                          └────────────────────┘  └───────────────┘  │ • Reference Tracks │
+                                                                      └───────────────────┘
+                                                          │
+                                    ┌─────────────────────┼─────────────────────┐
+                                    │                     │                     │
+                          ┌─────────▼──────────┐  ┌──────▼────────┐  ┌─────────▼──────────┐
+                          │   Stripe API       │  │  Prometheus   │  │   Sentry           │
+                          │  (Payments)        │  │  (Metrics)     │  │  (Error Tracking) │
+                          │                    │  │               │  │                   │
+                          │ • Credit Packs     │  │ • Performance  │  │ • Error Logs      │
+                          │ • Webhooks        │  │ • Health       │  │ • Stack Traces    │
+                          │                    │  │               │  │                   │
+                          └────────────────────┘  └───────────────┘  └───────────────────┘
+
+Request Flow:
+1. User submits track generation request → Frontend
+2. Frontend → FastAPI POST /api/tracks
+3. FastAPI creates Track & Job records in PostgreSQL
+4. FastAPI enqueues Celery task → Redis Queue
+5. Celery Worker picks up job → Calls FAL.ai/Replicate
+6. AI Provider generates audio → Streams to MinIO/S3
+7. Worker updates Track with file URLs → PostgreSQL
+8. Worker deducts credits → PostgreSQL CreditLedger
+9. Frontend polls GET /api/jobs/{id} → Displays progress
+10. When complete → Frontend displays audio player
+

@@ -1,28 +1,52 @@
-# SoundFoundry — Craft Your Sound
+<div align="center">
+
+![SoundFoundry Banner](assets/branding/social-card_1200x630.png)
+
+# SoundFoundry
+
+### Craft Your Sound
 
 **AI Music Generator** — Generate full tracks from text prompts. Add lyrics, guide with a reference, and export when ready.
 
-## Overview
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub last commit](https://img.shields.io/github/last-commit/Snapwave333/_SoundFoundry)](https://github.com/Snapwave333/_SoundFoundry)
+[![GitHub issues](https://img.shields.io/github/issues/Snapwave333/_SoundFoundry)](https://github.com/Snapwave333/_SoundFoundry/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/Snapwave333/_SoundFoundry)](https://github.com/Snapwave333/_SoundFoundry/pulls)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-SoundFoundry is a production-ready AI music generation platform that transforms text descriptions into professional-quality music tracks. Built with modern web technologies and designed for scalability, it offers a fair free tier trial and transparent pricing for extended use.
+[Installation](#-quick-install) • [Usage](#-features) • [Demo](#-demo) • [Architecture](#-architecture) • [Roadmap](./docs/ROADMAP.md) • [Contributing](./docs/CONTRIBUTING.md) • [License](#-license)
 
-### Features
+</div>
 
-- **Text-to-Music Generation**: Create full tracks from natural language prompts
-- **Optional Vocals**: Add lyrics for AI-generated vocal tracks
-- **Reference Audio**: Upload reference tracks to guide style and mood (with automatic BPM/key analysis)
-- **Multi-Genre Presets**: Cinematic, Electronic, Pop, Ambient, Hip-Hop, Rock, World
-- **Adjustable Parameters**: Duration (15-240s), style strength, tempo, key, seed
-- **Style System**: Visual series with unique palettes and geometry per user
-- **Real-Time Progress**: Track generation jobs with live updates (QUEUED → RENDERING → MASTERING → COMPLETE)
-- **Public Gallery**: Share tracks publicly with shareable links
-- **Credit System**: Fair pricing model with PPP-adjusted pricing and solidarity discounts
-- **Free Mode**: Generous free tier with daily limits
-- **Cover Art Generation**: Automatic visual cover generation for tracks
-- **Stem Export**: Download individual stems (when available)
-- **Visual Versioning**: Regenerate cover art with different visual styles
+---
 
-## Quick Install (Development)
+## ✨ Features
+
+- 🎵 **Text-to-Music Generation** - Create full tracks from natural language prompts
+- 🎤 **Optional Vocals** - Add lyrics for AI-generated vocal tracks
+- 🎧 **Reference Audio** - Upload reference tracks to guide style and mood (with automatic BPM/key analysis)
+- 🎨 **Multi-Genre Presets** - Cinematic, Electronic, Pop, Ambient, Hip-Hop, Rock, World
+- ⚙️ **Adjustable Parameters** - Duration (15-240s), style strength, tempo, key, seed
+- 🎨 **Style System** - Visual series with unique palettes and geometry per user
+- 📊 **Real-Time Progress** - Track generation jobs with live updates (QUEUED → RENDERING → MASTERING → COMPLETE)
+- 🌐 **Public Gallery** - Share tracks publicly with shareable links
+- 💳 **Credit System** - Fair pricing model with PPP-adjusted pricing and solidarity discounts
+- 🆓 **Free Mode** - Generous free tier with daily limits
+- 🖼️ **Cover Art Generation** - Automatic visual cover generation for tracks
+- 📦 **Stem Export** - Download individual stems (when available)
+- 🔄 **Visual Versioning** - Regenerate cover art with different visual styles
+
+## 🎬 Demo
+
+<div align="center">
+
+![SoundFoundry Interface](assets/branding/social-card_1200x630.png)
+
+*Screenshots and GIFs coming soon!*
+
+</div>
+
+## 🚀 Quick Install
 
 ### Prerequisites
 
@@ -71,24 +95,6 @@ npm run dev
 
 Visit `http://localhost:3000` to access the application.
 
-## Production Build & Deployment
-
-### Build Frontend
-
-```powershell
-cd web
-npm run build
-npm run start
-```
-
-### Docker Deployment
-
-```powershell
-cd web
-docker build -t soundfoundry-web .
-docker run -p 3000:3000 soundfoundry-web
-```
-
 ### Environment Variables
 
 **Frontend** (`web/.env.local`):
@@ -96,44 +102,99 @@ docker run -p 3000:3000 soundfoundry-web
 NEXT_PUBLIC_API_URL=http://localhost:8000
 NEXT_PUBLIC_APP_NAME=SoundFoundry
 NEXT_PUBLIC_USE_MSW=false
+NEXTAUTH_SECRET=your_nextauth_secret_here
+NEXTAUTH_URL=http://localhost:3000
 ```
 
 **Backend** (`server/.env`):
 ```env
-# API Keys
 FAL_API_KEY=your_fal_api_key
 REPLICATE_API_TOKEN=your_replicate_token
-
-# Database
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/soundfoundry
-
-# Redis
 REDIS_URL=redis://localhost:6379/0
-
-# Storage
 S3_ENDPOINT=http://localhost:9000
 S3_ACCESS_KEY=minioadmin
 S3_SECRET_KEY=minioadmin
 S3_BUCKET=soundfoundry
-
-# Pricing (optional - defaults provided)
-MODEL_COST_PER_MIN_USD=0.15
-INFRA_COST_PER_MIN_USD=0.05
-OVERHEAD_PER_MIN_USD=0.02
-MARGIN_CAP=0.12
-
-# Stripe (for production)
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
-
-# CORS (for production)
 CORS_ORIGINS=http://localhost:3000
 ENVIRONMENT=development
 ```
 
-See `docs/DEPLOYMENT.md` for detailed production deployment guides.
+See `config/.env.local.example` and `server/.env.example` for complete configuration options.
 
-## Credit & Pricing Model
+## 🏗️ Architecture
+
+<div align="center">
+
+![System Architecture](docs/system_architecture.png)
+
+*[View detailed architecture documentation](./docs/system_architecture.md)*
+
+</div>
+
+SoundFoundry uses a **microservices architecture**:
+
+- **Frontend**: Next.js 16 with React 19, React Query, Zustand
+- **Backend**: FastAPI REST API with Celery for async job processing
+- **Queue**: Redis-backed Celery workers
+- **Storage**: MinIO/S3 for audio files and cover art
+- **Database**: PostgreSQL with SQLAlchemy ORM
+- **Payments**: Stripe integration for credit purchases
+- **Observability**: Prometheus metrics, Sentry error tracking, OpenTelemetry
+
+### Request Flow
+
+```
+User → Next.js Frontend → FastAPI → Celery Worker → AI Provider (FAL.ai/Replicate)
+                                                      ↓
+                                              MinIO/S3 Storage
+                                                      ↓
+                                              PostgreSQL Database
+```
+
+## 🛠️ Tech Stack
+
+<div align="center">
+
+![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=for-the-badge&logo=fastapi)
+![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=for-the-badge&logo=postgresql)
+![Redis](https://img.shields.io/badge/Redis-5.2-DC382D?style=for-the-badge&logo=redis)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker)
+
+</div>
+
+### Frontend
+- **Next.js 16** - React framework with App Router
+- **React 19** - UI library
+- **TypeScript** - Type safety
+- **Tailwind CSS v4** - Utility-first styling
+- **React Query** - Data fetching and caching
+- **Zustand** - State management
+- **Radix UI** - Accessible component primitives
+
+### Backend
+- **FastAPI** - Modern Python web framework
+- **Celery** - Distributed task queue
+- **PostgreSQL** - Primary database
+- **Redis** - Queue broker and cache
+- **SQLAlchemy** - ORM
+- **Alembic** - Database migrations
+- **Stripe** - Payment processing
+
+### Infrastructure
+- **Docker Compose** - Local development
+- **MinIO/S3** - Object storage
+- **Prometheus** - Metrics collection
+- **Sentry** - Error tracking
+- **OpenTelemetry** - Distributed tracing
+
+## 💳 Credit & Pricing Model
 
 SoundFoundry operates on a **fair, cost-anchored pricing model** with **PPP-adjusted pricing** and **solidarity discounts**:
 
@@ -156,120 +217,75 @@ Price = (Base Cost Per Minute / 2) × (1 + Margin Cap) × PPP Multiplier × Soli
 
 See `server/app/services/pricing_service.py` for detailed pricing logic.
 
-## Architecture
+## 📚 Documentation
 
-SoundFoundry uses a microservices architecture:
+- [System Architecture](./docs/system_architecture.md) - Detailed architecture documentation
+- [Brand Guidelines](./docs/branding.md) - Logo usage, colors, typography
+- [Contributing Guide](./docs/CONTRIBUTING.md) - How to contribute
+- [Roadmap](./docs/ROADMAP.md) - Planned features and milestones
+- [Deployment Guide](./docs/DEPLOYMENT.md) - Production deployment instructions
 
-- **Frontend**: Next.js 16 with React 19, React Query, Zustand
-- **Backend**: FastAPI REST API with Celery for async job processing
-- **Queue**: Redis-backed Celery workers
-- **Storage**: MinIO/S3 for audio files and cover art
-- **Database**: PostgreSQL with SQLAlchemy ORM
-- **Payments**: Stripe integration for credit purchases
-- **Observability**: Prometheus metrics, Sentry error tracking, OpenTelemetry
+## 🤝 Contributing
 
-### API Endpoints
+Contributions are welcome! Please read our [Contributing Guide](./docs/CONTRIBUTING.md) first.
 
-**Tracks** (`/api/tracks`):
-- `GET /cost-preview` - Preview credit cost for duration
-- `POST /` - Create new track generation job
-- `GET /{track_id}` - Get track details
-- `POST /{track_id}/increment-visual-version` - Regenerate cover art
-- `POST /{track_id}/cover` - Upload custom cover art
-- `POST /{track_id}/refund-quality` - Request refund for quality issues
-- `GET /{track_id}/stream` - Stream audio file
-- `POST /{track_id}/publish` - Toggle public/private status
+### Quick Start for Contributors
 
-**Jobs** (`/api/jobs`):
-- `GET /{job_id}` - Get job status and progress
-- `GET /{job_id}/logs` - Get job execution logs
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-**Credits** (`/api/credits`):
-- `GET /` - Get user credit balance and pricing breakdown
-- `POST /purchase` - Purchase credit pack
-- `POST /update-ppp` - Update PPP band
-- `POST /toggle-solidarity` - Toggle solidarity pricing
+We follow [Conventional Commits](https://www.conventionalcommits.org/) for commit messages.
 
-**Style System** (`/api/style`):
-- `GET /me` - Get user style seed and unlocks
-- `GET /unlocks` - Get available style unlocks
-- `POST /unlocks/recompute` - Recompute unlocks based on tracks
-- `GET /series` - List user's series
-- `POST /series` - Create new series
-- `GET /series/{series_id}` - Get series details
-- `PATCH /series/{series_id}` - Update series
-- `GET /health` - Style system health check
+## 📄 License
 
-**Analysis** (`/api/analyze`):
-- `POST /reference` - Analyze reference audio (BPM, key, energy, loudness)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-**Stripe** (`/api/stripe`):
-- `POST /webhook` - Stripe webhook handler for payment events
+## 🙏 Credits & Acknowledgments
 
-**Health** (`/api`):
-- `GET /health` - API health check
-- `GET /health/providers` - Provider availability check
+### Fair-Use Credit System
 
-See `docs/system_architecture.md` for detailed architecture documentation.
+SoundFoundry implements a **fair market pricing baseline** with:
 
-## Branding Assets
+- **More-than-fair free trial window** - 400 credits on signup
+- **Transparent metering** - Clear credit usage tracking
+- **PPP-adjusted pricing** - Automatic price adjustment for global accessibility
+- **Solidarity discounts** - Optional 15% discount for users who opt in
+- **Disable free mode** - Free mode can be disabled at production scale
 
-Brand assets are located in `/assets/branding`:
+### Third-Party Resources
 
-- `logo.svg` - Primary logomark
-- `logo_wordmark.svg` - Wordmark variant
-- `icon_512.png` - App icon (512x512)
-- `icon_256.png` - App icon (256x256)
-- `logo_dark.svg` - Dark mode variant
+- **FAL.ai** - Primary AI music generation provider
+- **Replicate** - Fallback AI music generation provider
+- **Stripe** - Payment processing
+- **Next.js** - React framework
+- **FastAPI** - Python web framework
+- **Celery** - Distributed task queue
 
-For full brand guidelines and usage, see `/assets/branding/brand_guide.md`.
+## 📊 Project Status
 
-## Project Structure
+<div align="center">
 
-```
-/
-├── web/                    # Next.js 16 frontend
-│   ├── app/               # App Router pages
-│   │   ├── (app)/        # Authenticated routes (create, library, settings)
-│   │   ├── (marketing)/  # Public routes (landing)
-│   │   └── api/          # Next.js API routes (auth, tokens)
-│   ├── components/        # React components (UI, AudioPlayer, etc.)
-│   ├── lib/               # Utilities, API clients, hooks
-│   ├── hooks/             # Custom React hooks
-│   └── styles/            # Global CSS and Tailwind config
-├── server/                 # FastAPI backend
-│   ├── app/
-│   │   ├── api/          # API route handlers
-│   │   ├── models/       # SQLAlchemy models (Track, User, Job, Series, etc.)
-│   │   ├── services/     # Business logic (pricing, credits, storage, etc.)
-│   │   ├── workers/      # Celery tasks (generate_music)
-│   │   ├── middleware/   # Rate limiting, observability
-│   │   └── utils/        # Utilities (style_seed, etc.)
-│   ├── alembic/           # Database migrations
-│   └── requirements.txt   # Python dependencies
-├── assets/                 # Brand assets
-│   └── branding/         # Logos, icons, brand guidelines
-├── docs/                   # Documentation
-│   ├── system_architecture.md
-│   └── DEPLOYMENT.md
-├── scripts/                # Automation scripts
-│   ├── prod-smoke-test.sh
-│   └── verify-deployment.sh
-├── infra/                  # Docker Compose configs
-│   └── docker-compose.yml  # Local development infrastructure
-└── tests/                  # Test suites
-    ├── unit/              # Unit tests
-    └── e2e/               # End-to-end tests (Playwright)
-```
+![GitHub stars](https://img.shields.io/github/stars/Snapwave333/_SoundFoundry?style=social)
+![GitHub forks](https://img.shields.io/github/forks/Snapwave333/_SoundFoundry?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/Snapwave333/_SoundFoundry?style=social)
 
-## License
+</div>
 
-MIT License — see LICENSE file for details.
+**Current Version**: v0.1.0 (Alpha)
 
-## Contributing
+See [ROADMAP](./docs/ROADMAP.md) for planned features and milestones.
 
-Contributions welcome! Please read CONTRIBUTING.md first.
+---
 
-## Support
+<div align="center">
 
-For issues and questions, please open an issue on GitHub: https://github.com/Snapwave333/_SoundFoundry
+![SoundFoundry Wordmark](assets/branding/wordmark.svg)
+
+**Craft Your Sound** 🎵
+
+[GitHub](https://github.com/Snapwave333/_SoundFoundry) • [Issues](https://github.com/Snapwave333/_SoundFoundry/issues) • [Discussions](https://github.com/Snapwave333/_SoundFoundry/discussions)
+
+</div>
