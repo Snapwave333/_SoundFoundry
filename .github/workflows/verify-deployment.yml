@@ -189,6 +189,18 @@ jobs:
           path: report_html.html
           retention-days: 7
 
+      - name: Add ZAP report link to summary
+        if: always()
+        run: |
+          echo "## OWASP ZAP Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📊 ZAP baseline scan completed. Download the **zap-results** artifact to view the full HTML report." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Quick Review" >> $GITHUB_STEP_SUMMARY
+          echo "- Check artifacts for `report_html.html`" >> $GITHUB_STEP_SUMMARY
+          echo "- Review high/critical findings" >> $GITHUB_STEP_SUMMARY
+          echo "- Verify CSP and security headers" >> $GITHUB_STEP_SUMMARY
+
   gate:
     name: Verification Gate
     runs-on: ubuntu-latest
