@@ -5,11 +5,11 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 export const handlers = [
   // Create track
   http.post(`${API_BASE_URL}/api/tracks`, async ({ request }) => {
-    const body = await request.json();
+    const body = (await request.json()) as { duration?: number } | null;
     return HttpResponse.json({
       track_id: Math.floor(Math.random() * 1000),
       job_id: Math.floor(Math.random() * 1000),
-      credits_required: Math.ceil((body.duration || 60) / 60),
+      credits_required: Math.ceil((body?.duration || 60) / 60),
     });
   }),
 
