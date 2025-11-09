@@ -146,26 +146,78 @@ docker exec -it infra-redis-1 redis-cli ping
 Make sure these files exist with correct values:
 
 **`server/.env`:**
-```
+```env
+# API Keys
 FAL_API_KEY=your_fal_api_key_here
 REPLICATE_API_TOKEN=r8_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# Database
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/soundfoundry
+
+# Redis
 REDIS_URL=redis://localhost:6379/0
+
+# Storage (MinIO defaults)
+S3_ENDPOINT=http://localhost:9000
+S3_ACCESS_KEY=minioadmin
+S3_SECRET_KEY=minioadmin
+S3_BUCKET=soundfoundry
+
+# Pricing (optional - defaults provided)
+MODEL_COST_PER_MIN_USD=0.15
+INFRA_COST_PER_MIN_USD=0.05
+OVERHEAD_PER_MIN_USD=0.02
+MARGIN_CAP=0.12
+
+# CORS (for development)
+CORS_ORIGINS=http://localhost:3000
+ENVIRONMENT=development
 ```
 
 **`web/.env.local`:**
-```
+```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_APP_NAME=SoundFoundry
+NEXT_PUBLIC_USE_MSW=false
 ```
 
 ## Next Steps
 
 Once everything is running:
-1. Test track generation end-to-end
-2. Verify audio streaming works
-3. Test reference audio upload
-4. Check MinIO console at `http://localhost:9001` (minioadmin/minioadmin)
-5. Monitor Celery Flower at `http://localhost:5555` (if enabled)
+1. **Test track generation end-to-end**
+   - Navigate to `http://localhost:3000/create`
+   - Enter a prompt: "Upbeat electronic dance music"
+   - Set duration: 30-60 seconds
+   - Click "Generate Music"
+   - Watch job progress in the UI
+
+2. **Verify audio streaming works**
+   - When track completes, audio player should appear
+   - Click play to test streaming from MinIO
+
+3. **Test reference audio upload**
+   - Upload a reference audio file
+   - Verify BPM/key analysis appears
+   - Use analyzed values in track generation
+
+4. **Test style system**
+   - Check `/api/style/me` for style seed
+   - Create a new series via `/api/style/series`
+   - Generate tracks with series_id
+
+5. **Test credit system**
+   - Check credit balance: `GET /api/credits`
+   - Preview cost: `GET /api/tracks/cost-preview?duration_s=60`
+   - Verify credits deducted after generation
+
+6. **Check MinIO console**
+   - Visit `http://localhost:9001`
+   - Login: `minioadmin` / `minioadmin`
+   - Verify files uploaded to `soundfoundry` bucket
+
+7. **Monitor Celery Flower** (optional)
+   - Start: `celery -A app.celery_app flower --port=5555`
+   - Visit `http://localhost:5555` for worker monitoring
 
 ## API Documentation
 
