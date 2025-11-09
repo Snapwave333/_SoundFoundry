@@ -636,7 +636,16 @@ export function GenerationPanel({ onTrackCreated }: GenerationPanelProps) {
 
               <TabsContent value="reference">
                 <ReferenceUpload
-                  onUploadComplete={(fileId) => setReferenceFileId(fileId)}
+                  onUploadComplete={async (file) => {
+                    try {
+                      const result = await apiClient.analyzeReference(file);
+                      if (result.file_id) {
+                        setReferenceFileId(result.file_id);
+                      }
+                    } catch (error: any) {
+                      toast.error(error.message || "Failed to analyze reference");
+                    }
+                  }}
                 />
               </TabsContent>
             </Tabs>

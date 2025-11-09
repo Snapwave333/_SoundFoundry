@@ -35,8 +35,8 @@ export function useStyleSystem() {
         const seriesList = await fetchSeries();
         if (!mounted) return;
 
-        const default = seriesList.find((s) => s.slug.startsWith("default-"));
-        setDefaultSeries(default || null);
+        const defaultSeries = seriesList.find((s) => s.slug.startsWith("default-"));
+        setDefaultSeries(defaultSeries || null);
       } catch (err) {
         if (!mounted) return;
         setError(err instanceof Error ? err : new Error("Failed to load style system"));

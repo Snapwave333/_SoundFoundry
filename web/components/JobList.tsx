@@ -87,8 +87,10 @@ export function JobList({ jobIds }: JobListProps) {
               </div>
             )}
 
-            {job.status === "complete" && (
-              <AudioPlayer trackId={job.track_id} />
+            {job.status === "complete" && job.track_id && (
+              <div className="text-sm text-muted-foreground">
+                Track {job.track_id} completed. Preview available in library.
+              </div>
             )}
           </CardContent>
         </Card>
