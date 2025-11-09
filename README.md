@@ -1,107 +1,33 @@
-# SoundFoundry - AI Music Generator
+# SoundFoundry — Craft Your Sound
 
-A production-ready AI Music Generator web application with feature-parity to MiniMax's "Audio › Music" experience. Generate full tracks from text prompts with optional vocals, reference audio guidance, and multi-genre presets.
+**AI Music Generator** — Generate full tracks from text prompts. Add lyrics, guide with a reference, and export when ready.
 
-## Features
+## Overview
 
-- **Text-to-Music Generation**: Create full tracks from text prompts
-- **Optional Vocals**: Add lyrics for vocal generation
-- **Reference Audio**: Upload reference tracks to guide style
+SoundFoundry is a production-ready AI music generation platform that transforms text descriptions into professional-quality music tracks. Built with modern web technologies and designed for scalability, it offers a fair free tier trial and transparent pricing for extended use.
+
+### Features
+
+- **Text-to-Music Generation**: Create full tracks from natural language prompts
+- **Optional Vocals**: Add lyrics for AI-generated vocal tracks
+- **Reference Audio**: Upload reference tracks to guide style and mood
 - **Multi-Genre Presets**: Cinematic, Electronic, Pop, Ambient, Hip-Hop, Rock, World
 - **Adjustable Parameters**: Duration (15-240s), style strength, tempo, key
-- **Job Queue**: Real-time progress tracking for generation jobs
-- **User Accounts**: Free tier with limits, paid tiers for extended features
-- **Credit System**: Stripe integration for credit purchases
+- **Real-Time Progress**: Track generation jobs with live updates
 - **Public Gallery**: Share tracks publicly with shareable links
-- **Audio Analysis**: Automatic BPM/key/energy detection for reference tracks
+- **Credit System**: Fair pricing model with generous free tier
 
-## Architecture
-
-### Frontend
-- **Next.js 15** with App Router
-- **TypeScript** for type safety
-- **Tailwind CSS** + **shadcn/ui** for UI components
-- **React Query** for data fetching
-- **Zustand** for state management
-- **NextAuth.js** for authentication
-
-### Backend
-- **FastAPI** (Python) for REST API
-- **PostgreSQL** with SQLAlchemy ORM
-- **Celery** + **Redis** for async job processing
-- **MinIO/S3** for file storage
-- **Alembic** for database migrations
-
-### Model Providers
-- **FAL.ai MiniMax Music v2** (primary)
-- **Replicate MiniMax Music** (fallback)
-
-## Branding
-
-SoundFoundry uses the **Neo-Forge Glow** brand theme. Brand assets are located in:
-- `/public/brand/soundfoundry/` - Logos, icons, and hero assets
-- `/public/og/` - OpenGraph social preview images
-- `/lib/theme/tokens.ts` - Brand color tokens and design tokens
-- `/styles/globals.css` - Global theme styles
-
-The brand colors are:
-- **Forge Black** `#0D0D0F` - Background
-- **Graphite Gray** `#24262A` - Surfaces
-- **Steel White** `#F3F5F7` - Text
-- **Forge Amber** `#FFB24D` - Primary accent
-- **Resonance Blue** `#3A77FF` - Secondary accent
-
-## Getting Started
+## Quick Install (Development)
 
 ### Prerequisites
 
-- Docker and Docker Compose
-- Python 3.11+
-- Node.js 18+
-- PostgreSQL 16+ (or use Docker)
-- Redis (or use Docker)
+- **Node.js 20+** (for frontend)
+- **Python 3.11+** (for backend)
+- **Docker Desktop** (for PostgreSQL, Redis, MinIO)
 
-### Environment Variables
+### Step 1: Start Infrastructure
 
-**Frontend (`.env` in `/web`):**
-```bash
-NEXT_PUBLIC_API_URL=http://localhost:8000
-NEXTAUTH_SECRET=generate_with_openssl_rand_base64_32
-NEXTAUTH_URL=http://localhost:3000
-```
-
-**Backend (`.env` in `/server`):**
-```bash
-# Model Providers
-FAL_API_KEY=your_fal_api_key
-REPLICATE_API_TOKEN=your_replicate_token
-
-# Database
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/soundfoundry
-
-# Redis
-REDIS_URL=redis://localhost:6379/0
-
-# Storage
-S3_ENDPOINT=http://localhost:9000
-S3_ACCESS_KEY=minioadmin
-S3_SECRET_KEY=minioadmin
-S3_BUCKET=soundfoundry
-
-# Stripe (optional)
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_PUBLISHABLE_KEY=pk_test_...
-STRIPE_WEBHOOK_SECRET=whsec_...
-
-# Observability (optional)
-SENTRY_DSN=your_sentry_dsn
-ENVIRONMENT=development
-```
-
-### Local Development
-
-1. **Start infrastructure services**:
-```bash
+```powershell
 cd infra
 docker compose up -d
 ```
@@ -111,48 +37,111 @@ This starts:
 - Redis on port 6379
 - MinIO on ports 9000 (API) and 9001 (Console)
 
-2. **Set up backend**:
-```bash
+### Step 2: Backend Setup
+
+```powershell
 cd server
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+.\venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-
-# Run migrations
 alembic upgrade head
-
-# Start API server
 uvicorn app.main:app --reload --port 8000
+```
 
-# In another terminal, start Celery worker
+### Step 3: Celery Worker
+
+```powershell
+cd server
+.\venv\Scripts\Activate.ps1
 celery -A app.celery_app worker --loglevel=info
 ```
 
-3. **Set up frontend**:
-```bash
+### Step 4: Frontend Setup
+
+```powershell
 cd web
 npm install
 npm run dev
 ```
 
-The app will be available at `http://localhost:3000`
+Visit `http://localhost:3000` to access the application.
 
-### Docker Development
+## Production Build & Deployment
 
-Run everything with Docker Compose:
+### Build Frontend
 
-```bash
-cd infra
-docker compose up
+```powershell
+cd web
+npm run build
+npm run start
 ```
 
-This starts all services including the API, Celery worker, and frontend (if configured).
+### Docker Deployment
 
-## API Documentation
+```powershell
+cd web
+docker build -t soundfoundry-web .
+docker run -p 3000:3000 soundfoundry-web
+```
 
-Once the server is running, visit:
-- Swagger UI: `http://localhost:8000/docs`
-- ReDoc: `http://localhost:8000/redoc`
+### Environment Variables
+
+**Frontend** (`web/.env.local`):
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_APP_NAME=SoundFoundry
+NEXT_PUBLIC_USE_MSW=false
+```
+
+**Backend** (`server/.env`):
+```env
+FAL_API_KEY=your_fal_api_key
+REPLICATE_API_TOKEN=your_replicate_token
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/soundfoundry
+REDIS_URL=redis://localhost:6379/0
+S3_ENDPOINT=http://localhost:9000
+S3_ACCESS_KEY=minioadmin
+S3_SECRET_KEY=minioadmin
+S3_BUCKET=soundfoundry
+```
+
+See `docs/DEPLOYMENT.md` for detailed production deployment guides.
+
+## Credit & Pricing Model
+
+SoundFoundry operates on a **fair market pricing model** with a **generous free tier trial**:
+
+- **Free Tier**: 5 tracks/day, max 60 seconds per track
+- **Pro Tier**: Unlimited tracks, up to 240 seconds, priority queue
+- **Enterprise**: Custom limits, dedicated support, API access
+
+Credits are deducted per track based on duration and complexity. Pricing is transparent and competitive with market rates, while offering more than fair free tier access for users to evaluate the platform.
+
+See `server/app/services/pricing_service.py` for detailed pricing logic.
+
+## Architecture
+
+SoundFoundry uses a microservices architecture:
+
+- **Frontend**: Next.js 15 with React Query for data fetching
+- **Backend**: FastAPI REST API with Celery for async job processing
+- **Queue**: Redis-backed Celery workers
+- **Storage**: MinIO/S3 for audio files
+- **Database**: PostgreSQL with SQLAlchemy ORM
+
+See `docs/system_architecture.md` for detailed architecture documentation.
+
+## Branding Assets
+
+Brand assets are located in `/assets/branding`:
+
+- `logo.svg` - Primary logomark
+- `logo_wordmark.svg` - Wordmark variant
+- `icon_512.png` - App icon (512x512)
+- `icon_256.png` - App icon (256x256)
+- `logo_dark.svg` - Dark mode variant
+
+For full brand guidelines and usage, see `/assets/branding/brand_guide.md`.
 
 ## Project Structure
 
@@ -169,55 +158,18 @@ Once the server is running, visit:
 │   │   ├── services/     # Business logic
 │   │   └── workers/      # Celery tasks
 │   └── alembic/           # DB migrations
-├── infra/                  # Infrastructure
-│   └── docker-compose.yml
-└── docs/                   # Documentation
+├── assets/                 # Brand assets
+│   └── branding/         # Logos, icons, guidelines
+├── docs/                   # Documentation
+│   └── system_architecture.md
+├── scripts/                # Automation scripts
+├── config/                 # Environment templates
+└── infra/                  # Docker Compose configs
 ```
-
-## Usage
-
-### Creating a Track
-
-1. Enter a prompt describing the music you want
-2. Select a genre preset (optional)
-3. Adjust duration (15-240s) and style strength
-4. Optionally add lyrics if enabling vocals
-5. Optionally upload a reference track
-6. Click "Generate Music"
-
-### Free Tier Limits
-
-- Maximum duration: 60 seconds
-- Daily limit: 5 tracks
-- Upgrade to Pro for longer tracks and unlimited generation
-
-## Testing
-
-```bash
-# Backend tests
-cd server
-pytest
-
-# Frontend tests
-cd web
-npm test
-
-# E2E tests
-npm run test:e2e
-```
-
-## Production Deployment
-
-See `docs/DEPLOYMENT.md` for production deployment guides including:
-- AWS deployment with Terraform
-- Fly.io deployment
-- Environment configuration
-- Database migrations
-- Monitoring setup
 
 ## License
 
-MIT License - see LICENSE file for details
+MIT License — see LICENSE file for details.
 
 ## Contributing
 
@@ -225,5 +177,4 @@ Contributions welcome! Please read CONTRIBUTING.md first.
 
 ## Support
 
-For issues and questions, please open an issue on GitHub.
-
+For issues and questions, please open an issue on GitHub: https://github.com/Snapwave333/_SoundFoundry
