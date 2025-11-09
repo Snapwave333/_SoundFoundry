@@ -1,0 +1,223 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./design-tokens.css";
+@import "./semantic.css";
+@import "./slider-tracks.css";
+@import "./theme-packs.css";
+@import "./accessibility.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Design Tokens - New System */
+  --color-bg: hsl(220 14% 9%);
+  --color-bg-elevated: hsl(220 14% 12%);
+  --color-surface: hsl(220 14% 16%);
+  --color-border: hsl(220 14% 25%);
+  --color-border-strong: hsl(220 14% 35%);
+  --color-fg: hsl(220 14% 92%);
+  --color-fg-muted: hsl(220 14% 70%);
+  --color-fg-subtle: hsl(220 14% 55%);
+  --color-accent: hsl(268 72% 62%);
+  --color-accent-hover: hsl(268 72% 55%);
+  --color-accent-muted: hsl(268 20% 38%);
+  --color-positive: hsl(140 55% 45%);
+  --color-warning: hsl(44 85% 62%);
+  --color-danger: hsl(355 68% 55%);
+  
+  /* Legacy Brand Colors - Neo-Forge Glow (kept for compatibility) */
+  --color-forge-black: #0D0D0F;
+  --color-forge-gray: #24262A;
+  --color-forge-white: #F3F5F7;
+  --color-forge-amber: #FFB24D;
+  --color-forge-blue: #3A77FF;
+  --color-success: #36C98C;
+  --color-error: #FF4D4D;
+
+  /* shadcn/ui Theme Mapping */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  
+  /* Brand Shadows */
+  --shadow-panel: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:root {
+  --radius: 6px; /* Button radius per brand spec */
+  --background: #0D0D0F; /* forge.black */
+  --foreground: #F3F5F7; /* forge.white */
+  --card: #24262A; /* forge.gray */
+  --card-foreground: #F3F5F7;
+  --popover: #24262A;
+  --popover-foreground: #F3F5F7;
+  --primary: #FFB24D; /* forge.amber */
+  --primary-foreground: #0D0D0F; /* forge.black */
+  --secondary: #24262A; /* forge.gray */
+  --secondary-foreground: #F3F5F7;
+  --muted: #24262A;
+  --muted-foreground: #9CA3AF;
+  --accent: #3A77FF; /* forge.blue */
+  --accent-foreground: #F3F5F7;
+  --destructive: #FF4D4D; /* error */
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.15);
+  --ring: rgba(255, 178, 77, 0.5); /* amber with opacity */
+  --chart-1: #FFB24D;
+  --chart-2: #3A77FF;
+  --chart-3: #36C98C;
+  --chart-4: #FF4D4D;
+  --chart-5: #9CA3AF;
+  --sidebar: #24262A;
+  --sidebar-foreground: #F3F5F7;
+  --sidebar-primary: #FFB24D;
+  --sidebar-primary-foreground: #0D0D0F;
+  --sidebar-accent: #24262A;
+  --sidebar-accent-foreground: #F3F5F7;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-ring: rgba(255, 178, 77, 0.5);
+}
+
+.dark {
+  /* Dark mode is default, so same as root */
+  --background: #0D0D0F;
+  --foreground: #F3F5F7;
+  --card: #24262A;
+  --card-foreground: #F3F5F7;
+  --popover: #24262A;
+  --popover-foreground: #F3F5F7;
+  --primary: #FFB24D;
+  --primary-foreground: #0D0D0F;
+  --secondary: #24262A;
+  --secondary-foreground: #F3F5F7;
+  --muted: #24262A;
+  --muted-foreground: #9CA3AF;
+  --accent: #3A77FF;
+  --accent-foreground: #F3F5F7;
+  --destructive: #FF4D4D;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.15);
+  --ring: rgba(255, 178, 77, 0.5);
+  --chart-1: #FFB24D;
+  --chart-2: #3A77FF;
+  --chart-3: #36C98C;
+  --chart-4: #FF4D4D;
+  --chart-5: #9CA3AF;
+  --sidebar: #24262A;
+  --sidebar-foreground: #F3F5F7;
+  --sidebar-primary: #FFB24D;
+  --sidebar-primary-foreground: #0D0D0F;
+  --sidebar-accent: #24262A;
+  --sidebar-accent-foreground: #F3F5F7;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-ring: rgba(255, 178, 77, 0.5);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  
+  html {
+    @apply dark; /* Force dark mode as default */
+    color-scheme: dark;
+  }
+  
+  body {
+    @apply bg-bg text-fg;
+    background-color: hsl(var(--color-bg));
+    color: hsl(var(--color-fg));
+    font-smooth: antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Focus visible styles for accessibility */
+  :where(button, [role="button"], a, input, textarea, select):focus-visible {
+    outline: 2px solid hsl(var(--color-accent));
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+  
+  /* Button styles per brand spec */
+  button {
+    border-radius: 6px;
+  }
+  
+  button:hover:not(:disabled) {
+    filter: brightness(1.04);
+  }
+  
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  /* Panel shadows */
+  .panel-shadow {
+    box-shadow: var(--shadow-panel);
+  }
+  
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+  
+  /* Spacing scale (8px base) */
+  :root {
+    --spacing-unit: 8px;
+  }
+
+  /* Flash animation for undo/redo feedback */
+  @keyframes flash {
+    0% {
+      outline-color: transparent;
+    }
+    50% {
+      outline-color: hsl(var(--accent));
+    }
+    100% {
+      outline-color: transparent;
+    }
+  }
+}
+

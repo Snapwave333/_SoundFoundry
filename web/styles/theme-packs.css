@@ -1,0 +1,26 @@
+/**
+ * Theme packs - quick brand pivots without code changes
+ * Toggle via data-theme attribute on <html>
+ */
+
+:root.theme-vapor {
+  --color-accent: 180 90% 55%;
+  --color-accent-hover: 180 90% 48%;
+  --color-accent-muted: 180 20% 45%;
+  --accent-hue: 180;
+}
+
+:root.theme-crimson {
+  --color-accent: 350 80% 55%;
+  --color-accent-hover: 350 80% 48%;
+  --color-accent-muted: 350 20% 45%;
+  --accent-hue: 350;
+}
+
+:root.theme-amber {
+  --color-accent: 40 90% 55%;
+  --color-accent-hover: 40 90% 48%;
+  --color-accent-muted: 40 20% 45%;
+  --accent-hue: 40;
+}
+

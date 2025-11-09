@@ -1,0 +1,107 @@
+/**
+ * Design tokens as CSS custom properties
+ * Import this file to use tokens in CSS/SCSS
+ */
+
+:root {
+  /* Color */
+  --color-bg: hsl(220 14% 9%);
+  --color-bg-elevated: hsl(220 14% 12%);
+  --color-surface: hsl(220 14% 16%);
+  --color-border: hsl(220 14% 25%);
+  --color-border-strong: hsl(220 14% 35%);
+  
+  --color-fg: hsl(220 14% 92%);
+  --color-fg-muted: hsl(220 14% 70%);
+  --color-fg-subtle: hsl(220 14% 55%);
+  
+  --color-accent: hsl(268 72% 62%);
+  --color-accent-hover: hsl(268 72% 55%);
+  --color-accent-muted: hsl(268 20% 38%);
+  
+  --color-positive: hsl(140 55% 45%);
+  --color-warning: hsl(44 85% 62%);
+  --color-danger: hsl(355 68% 55%);
+  
+  /* Typography */
+  --font-system: ui-sans-serif, Inter, system-ui, sans-serif;
+  --font-mono: ui-monospace, Menlo, monospace;
+  
+  --font-size-xs: 11px;
+  --font-size-sm: 13px;
+  --font-size-md: 15px;
+  --font-size-lg: 18px;
+  --font-size-xl: 22px;
+  
+  --line-tight: 1.2;
+  --line-normal: 1.45;
+  
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-round: 999px;
+  
+  /* Shadow */
+  --shadow-none: none;
+  --shadow-sm: 0 1px 2px hsl(220 14% 6% / 0.3);
+  --shadow-md: 0 3px 6px hsl(220 14% 6% / 0.35);
+  --shadow-lg: 0 6px 12px hsl(220 14% 6% / 0.45);
+  
+  /* Motion */
+  --motion-fast: 120ms ease-out;
+  --motion-normal: 200ms ease;
+  --motion-slow: 350ms ease-in-out;
+  
+  /* Scales */
+  --scale-node-base: 1.0;
+  --scale-node-hover: 1.08;
+  --scale-node-selected: 1.16;
+  
+  /* Opacity */
+  --opacity-muted: 0.6;
+  --opacity-disabled: 0.35;
+  
+  /* Gradient */
+  --accent-hue: 268;
+  --gradient-angle-base: 45deg;
+  --gradient-strength-1: hsl(var(--accent-hue) 70% 60%);
+  --gradient-strength-2: hsl(var(--accent-hue) 70% 45%);
+  
+  /* Grid */
+  --grid-unit: 8px;
+  --content-max-width: 1440px;
+  
+  /* Feature Flags */
+  --style-seed-enabled: 1;
+  --series-color-palette-base: 1;
+  --gradient-reactive-to-mood: 1;
+}
+
+/* Light theme */
+:root.light {
+  --color-bg: 0 0% 98%;
+  --color-bg-elevated: 0 0% 100%;
+  --color-surface: 0 0% 100%;
+  --color-border: 220 14% 88%;
+  --color-border-strong: 220 14% 75%;
+  --color-fg: 220 14% 12%;
+  --color-fg-muted: 220 14% 35%;
+  --color-fg-subtle: 220 14% 50%;
+  --color-accent: 268 72% 48%;
+  --color-accent-hover: 268 72% 42%;
+  --color-accent-muted: 268 20% 55%;
+  --color-positive: 140 55% 35%;
+  --color-warning: 44 85% 50%;
+  --color-danger: 355 68% 45%;
+}
+

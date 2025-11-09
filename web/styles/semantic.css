@@ -1,0 +1,151 @@
+/**
+ * Semantic utility classes using design tokens
+ * Import once in globals.css
+ */
+
+/* Surfaces */
+.surface {
+  background: hsl(var(--color-surface));
+  border: 1px solid hsl(var(--color-border));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.card {
+  background: hsl(var(--color-bg-elevated));
+  border: 1px solid hsl(var(--color-border));
+  border-radius: var(--radius-md);
+}
+
+.panel {
+  background: hsl(var(--color-bg-elevated));
+  border: 1px solid hsl(var(--color-border));
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+/* Text utilities */
+.text-subtle {
+  color: hsl(var(--color-fg-subtle));
+}
+
+.text-muted {
+  color: hsl(var(--color-fg-muted));
+}
+
+.text-fg {
+  color: hsl(var(--color-fg));
+}
+
+/* Buttons */
+.btn {
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  transition: background var(--motion-normal), box-shadow var(--motion-normal);
+  font-family: var(--font-system);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.btn-accent {
+  background: hsl(var(--color-accent));
+  color: hsl(220 14% 12%);
+}
+
+.btn-accent:hover {
+  background: hsl(var(--color-accent-hover));
+}
+
+.btn-accent:active {
+  transform: scale(0.98);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: hsl(var(--color-fg));
+}
+
+.btn-ghost:hover {
+  background: hsl(var(--color-surface));
+}
+
+.btn-outline {
+  background: transparent;
+  color: hsl(var(--color-fg));
+  border: 1px solid hsl(var(--color-border));
+}
+
+.btn-outline:hover {
+  background: hsl(var(--color-surface));
+  border-color: hsl(var(--color-border-strong));
+}
+
+.btn:disabled {
+  opacity: var(--opacity-disabled);
+  cursor: not-allowed;
+}
+
+/* Inputs */
+.input {
+  background: hsl(var(--color-surface));
+  border: 1px solid hsl(var(--color-border));
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  color: hsl(var(--color-fg));
+  font-family: var(--font-system);
+  font-size: var(--font-size-sm);
+  transition: border-color var(--motion-normal), box-shadow var(--motion-normal);
+}
+
+.input:focus {
+  outline: none;
+  border-color: hsl(var(--color-accent));
+  box-shadow: 0 0 0 2px hsl(var(--color-accent) / 0.2);
+}
+
+.input:focus-visible {
+  outline: 2px solid hsl(var(--color-accent));
+  outline-offset: 2px;
+}
+
+.input::placeholder {
+  color: hsl(var(--color-fg-subtle));
+}
+
+/* Focus ring (global) */
+:where(button, [role="button"], a, input, textarea, select):focus-visible {
+  outline: 2px solid hsl(var(--color-accent));
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Transitions */
+.transition-fast {
+  transition-duration: var(--motion-fast);
+}
+
+.transition-normal {
+  transition-duration: var(--motion-normal);
+}
+
+.transition-slow {
+  transition-duration: var(--motion-slow);
+}
+
+/* Node scales (for evolution map, remix tree) */
+.node-base {
+  transform: scale(var(--scale-node-base));
+  transition: transform var(--motion-normal);
+}
+
+.node-hover {
+  transform: scale(var(--scale-node-hover));
+}
+
+.node-selected {
+  transform: scale(var(--scale-node-selected));
+}
+

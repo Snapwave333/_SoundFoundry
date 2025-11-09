@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>SoundFoundry — Hero</title>
+<style>
+  :root{
+    --bg:#0D0D0F;
+    --amber:#FFB24D;
+    --blue:#3A77FF;
+  }
+  html,body{height:100%;margin:0;background:var(--bg);}
+  .wrap{height:100%;display:grid;place-items:center;overflow:hidden;}
+  .band{
+    width:120vmax; height:50vmin;
+    background:linear-gradient(90deg,var(--amber),var(--blue));
+    filter:brightness(1.15) saturate(1.05);
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10"><path d="M0 5 Q25 0 50 5 T100 5" stroke="white" stroke-width="3" fill="none"/></svg>') center/100% 100% no-repeat;
+            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10"><path d="M0 5 Q25 0 50 5 T100 5" stroke="white" stroke-width="3" fill="none"/></svg>') center/100% 100% no-repeat;
+    animation: pump 4s ease-in-out infinite alternate;
+    border-radius: 24px;
+    box-shadow: 0 40px 120px rgba(255,178,77,0.15), 0 -20px 80px rgba(58,119,255,0.15);
+  }
+  @keyframes pump{
+    0%{transform: translateY(0) scaleY(1);}
+    100%{transform: translateY(-2vmin) scaleY(1.4);}
+  }
+  .caption{
+    position:fixed; inset: auto 0 6vh 0; text-align:center; color:#F3F5F7; font-family: system-ui, -apple-system, Segoe UI, Inter, Roboto, Helvetica, Arial;
+    opacity:.9; letter-spacing:.3px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="band"></div>
+</div>
+<div class="caption">SoundFoundry — Neo‑Forge Glow</div>
+</body>
+</html>

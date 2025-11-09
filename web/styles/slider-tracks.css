@@ -1,0 +1,35 @@
+/**
+ * Mood-reactive slider tracks for macro panel
+ */
+
+.slider-track {
+  background: linear-gradient(
+    var(--gradient-angle-base, 45deg),
+    hsl(var(--color-accent)) 0%,
+    hsl(var(--color-accent) / 0.35) 100%
+  );
+  transition: background var(--motion-normal);
+}
+
+/* Mood-based gradient angle adjustments */
+[data-mood="energetic"] .slider-track {
+  --gradient-angle-base: 60deg;
+}
+
+[data-mood="calm"] .slider-track {
+  --gradient-angle-base: 30deg;
+}
+
+[data-mood="melancholic"] .slider-track {
+  --gradient-angle-base: 15deg;
+}
+
+[data-mood="uplifting"] .slider-track {
+  --gradient-angle-base: 75deg;
+}
+
+/* Default gradient angle */
+:root {
+  --gradient-angle-base: 45deg;
+}
+

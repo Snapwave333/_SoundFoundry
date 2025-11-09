@@ -1,0 +1,24 @@
+name: Token Lint Check
+
+on:
+  pull_request:
+    paths:
+      - "web/components/**"
+      - "web/app/**"
+      - "web/styles/**"
+
+jobs:
+  lint-tokens:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Check for hardcoded colors
+        run: |
+          npm run lint:tokens
+          
+      - name: Check diff for hardcoded colors
+        run: |
+          git fetch origin main || true
+          git diff --name-only origin/main...HEAD | grep -E "\.(tsx|ts|jsx|js|css)$" | xargs grep -nE "#[0-9a-fA-F]{3,8}|hsl\\([^v]|rgb\\([^v]" && (echo "Hardcoded color found in diff"; exit 1) || true
+
