@@ -1,18 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/globals.css";
 import { Providers } from "@/lib/providers";
 import { AnalyticsScript } from "@/components/Analytics";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// Using CSS variables with system font stacks for best performance and reliability
+const fontSansVariable = "--font-geist-sans";
+const fontMonoVariable = "--font-geist-mono";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://promptbloom.app";
 const siteName = "PromptBloom";
@@ -100,11 +93,19 @@ export default function RootLayout({
         <link rel="icon" href="/branding/favicon.ico" />
         <link rel="apple-touch-icon" href="/branding/icon_512.png" />
         <link rel="manifest" href="/site.webmanifest" />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              :root {
+                ${fontSansVariable}: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+                ${fontMonoVariable}: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+              }
+            `,
+          }}
+        />
         <AnalyticsScript />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className="antialiased font-sans">
         <Providers>{children}</Providers>
       </body>
     </html>

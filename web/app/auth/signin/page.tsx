@@ -1,6 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import SignInForm from "./SignInForm";
+
+function SignInFormSkeleton() {
+  return (
+    <div className="space-y-4 animate-pulse">
+      <div className="h-10 bg-graphite/40 rounded" />
+      <div className="h-10 bg-graphite/40 rounded" />
+      <div className="h-10 bg-graphite/40 rounded" />
+    </div>
+  );
+}
 
 export default function SignInPage() {
   return (
@@ -16,8 +27,10 @@ export default function SignInPage() {
             className="h-10 w-auto"
           />
         </div>
-        
-        <SignInForm />
+
+        <Suspense fallback={<SignInFormSkeleton />}>
+          <SignInForm />
+        </Suspense>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-steel/70">
