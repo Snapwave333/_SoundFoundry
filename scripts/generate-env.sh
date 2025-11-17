@@ -20,12 +20,12 @@ cat > web/.env.local << EOF
 DATABASE_URL="postgresql://soundfoundry:${DATABASE_PASSWORD}@localhost:5432/soundfoundry"
 
 # NextAuth
-NEXTAUTH_URL="https://promptbloom.app"
+NEXTAUTH_URL="https://soundfoundry.app"
 NEXTAUTH_SECRET="${NEXTAUTH_SECRET}"
 
 # API Configuration
-NEXT_PUBLIC_API_URL="https://api.promptbloom.app"
-NEXT_PUBLIC_SITE_URL="https://promptbloom.app"
+NEXT_PUBLIC_API_URL="https://api.soundfoundry.app"
+NEXT_PUBLIC_SITE_URL="https://soundfoundry.app"
 NEXT_PUBLIC_DASHBOARD_BASE="/app"
 
 # Stripe (Update with your actual keys)
@@ -57,8 +57,8 @@ cat > server/.env << EOF
 DATABASE_URL="postgresql://soundfoundry:${DATABASE_PASSWORD}@localhost:5432/soundfoundry"
 
 # API Configuration
-API_BASE_URL="https://api.promptbloom.app"
-CORS_ORIGINS="https://promptbloom.app,https://www.promptbloom.app"
+API_BASE_URL="https://api.soundfoundry.app"
+CORS_ORIGINS="https://soundfoundry.app,https://www.soundfoundry.app"
 
 # Authentication
 JWT_SECRET="${JWT_SECRET}"
